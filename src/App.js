@@ -48,57 +48,54 @@ class App extends Component {
       seconds: '00',   // responsible for the seconds 
       minutes: '00',  // responsible for the minutes
       hours: '00',  // responsible for the Hours
-      days: '00',  // responsible for the Days
-      isClicked : false
+      days: '00'  // responsible for the Days
     }
-    this.secondsRemaining; 
-    this.intervalHandle;
+    // method that handle the date time change
     this.handleChange = this.handleChange.bind(this);
     // method that triggers the countdown functionality
     this.startCountDown = this.startCountDown.bind(this);
     this.tick = this.tick.bind(this);
+    this.secondsRemaining = 0;
   }
   
   handleChange(momentValue) {
+    clearInterval(this.intervalHandle);
     var duration = moment.duration(momentValue.diff(moment.now()));
     this.setState({
-      seconds: duration.seconds(),
-      minutes: duration.minutes(),
-      hours: duration.hours(),
-      days: duration.days()
+      seconds: this.formatNumber(duration.seconds()),
+      minutes: this.formatNumber(duration.minutes()),
+      hours: this.formatNumber(duration.hours()),
+      days: this.formatNumber(duration.days())
     });
-  }
-  
-  tick() {
-    var min = Math.floor(this.secondsRemaining / 60);
-    var sec = this.secondsRemaining - (min * 60);
-    this.setState({
-      minutes: min,
-      seconds: sec
-    })
-    if (sec < 10) {
-      this.setState({
-        seconds: "0" + this.state.seconds,
-      })
-    }
-    if (min < 10) {
-      this.setState({
-        minutes: "0" + min,
-      })
-    }
-    if (min === 0 & sec === 0) {
-      clearInterval(this.intervalHandle);
-    }
-    this.secondsRemaining--
+    this.secondsRemaining = Math.floor(duration.asSeconds());
   }
   
   startCountDown() {
     this.intervalHandle = setInterval(this.tick, 1000);
-    let time = this.state.minutes;
-    this.secondsRemaining = time * 60;
+  }
+  
+  tick() {
+    var day = Math.floor(this.secondsRemaining / 60 / 60 / 24);
+    var hour = Math.floor(this.secondsRemaining / 60 / 60);
+    var min = Math.floor(this.secondsRemaining / 60);
+    var sec = Math.floor(this.secondsRemaining - (min * 60));
     this.setState({
-      isClicked : true
+      days: this.formatNumber(day),
+      hours: this.formatNumber(hour),
+      minutes: this.formatNumber(min),
+      seconds: this.formatNumber(sec)
     })
+    if (day === 0 & hour ===0 & min === 0 & sec === 0) {
+      clearInterval(this.intervalHandle);
+    }
+    this.secondsRemaining--
+  }
+
+  formatNumber(number){
+    if (number < 10) {
+      return "0" + number;
+    }
+    return number;
   }
   
   render() {
