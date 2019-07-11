@@ -1,0 +1,25 @@
+{
+  "name": "cruise-counter",
+  "version": "0.1.0",
+  "private": true,
+  "dependencies": {
+    "eslint": "^5.16.0",
+    "moment": "^2.24.0",
+    "react": "^16.8.6",
+    "react-datetime-inputs": "0.0.6",
+    "react-dom": "^16.8.6",
+    "react-moment": "^0.9.2",
+    "react-scripts": "0.9.5"
+  },
+  "devDependencies": {
+    "eslint": "^5.16.0",
+    "eslint-config-google": "^0.13.0",
+    "eslint-plugin-react": "^7.14.2"
+  },
+  "scripts": {
+    "start": "react-scripts start",
+    "build": "react-scripts build",
+    "test": "react-scripts test --env=jsdom",
+    "eject": "react-scripts eject"
+  }
+}
