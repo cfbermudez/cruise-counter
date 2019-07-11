@@ -41,6 +41,18 @@ class Timer extends React.Component {
   }
 }
 
+class CompleteMessage extends React.Component {
+  render(){
+    return(
+      <div style={{display:this.props.display}} className="CompleteMessage">
+        <h1>Congratulations!!!</h1>
+        <h2>Your Cruise has begun</h2>
+        <h2>Have fun!</h2>
+      </div>
+    );
+  }
+}
+
 class App extends Component {
   constructor(props){
     super(props);
@@ -48,7 +60,8 @@ class App extends Component {
       seconds: '00',   // responsible for the seconds 
       minutes: '00',  // responsible for the minutes
       hours: '00',  // responsible for the Hours
-      days: '00'  // responsible for the Days
+      days: '00',  // responsible for the Days
+      completed: "none"
     }
     // method that handle the date time change
     this.handleChange = this.handleChange.bind(this);
@@ -87,6 +100,9 @@ class App extends Component {
     })
     if (day === 0 & hour ===0 & min === 0 & sec === 0) {
       clearInterval(this.intervalHandle);
+      this.setState({
+        completed : "flex"
+      });
     }
     this.secondsRemaining--
   }
@@ -103,6 +119,7 @@ class App extends Component {
       <div className="App">
         <Header/>
         <Timer days={this.state.days} hours={this.state.hours} minutes={this.state.minutes} seconds={this.state.seconds}/>
+        <CompleteMessage display={this.state.completed} />
         <div className="DatetimeInputHolder">
           <DatetimeInput
             placeholder="Please select the Date and Time of your Cruise"
