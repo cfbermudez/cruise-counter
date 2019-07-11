@@ -19,13 +19,27 @@ class Header extends React.Component {
 class Timer extends React.Component {
   render() {
     return (
-      <div>
-        <h1 style={{ fontSize: 100, marginLeft:100 }}>{this.props.days} {this.props.hours}:{this.props.minutes}:{this.props.seconds}</h1>
+      <div className="CounterHolder">
+        <div className="CounterDigit">
+          {this.props.days}
+          <div className="CounterLabel">Days</div>
+        </div>
+        <div className="CounterDigit">
+          {this.props.hours}
+          <div className="CounterLabel">Hours</div>
+        </div>
+        <div className="CounterDigit">
+          {this.props.minutes}
+          <div className="CounterLabel">Minutes</div>
+        </div>
+        <div className="CounterDigit">
+          {this.props.seconds}
+          <div className="CounterLabel">Seconds</div>
+        </div>
       </div>
     );
   }
 }
-
 
 class App extends Component {
   constructor(props){
@@ -34,7 +48,7 @@ class App extends Component {
       seconds: '00',   // responsible for the seconds 
       minutes: '00',  // responsible for the minutes
       hours: '00',  // responsible for the Hours
-      days: '00',  // responsible for the minutes
+      days: '00',  // responsible for the Days
       isClicked : false
     }
     this.secondsRemaining; 
@@ -91,22 +105,14 @@ class App extends Component {
     return (
       <div className="App">
         <Header/>
-        <DatetimeInput
-          placeholder="Please select the Date and Time of your Cruise"
-          onChange={this.handleChange}
-          onClose={this.startCountDown}
-          minDate={moment.now()}>
-        </DatetimeInput>
-        <div className="row">
-          <div className="col-md-4">
-            <Timer days={this.state.days} hours={this.state.hours} minutes={this.state.minutes} seconds={this.state.seconds}/>
-            <div>
-              <div>Days</div>
-              <div>Hours</div>
-              <div>Minutes</div>
-              <div>Seconds</div>
-            </div>
-          </div>
+        <Timer days={this.state.days} hours={this.state.hours} minutes={this.state.minutes} seconds={this.state.seconds}/>
+        <div className="DatetimeInputHolder">
+          <DatetimeInput
+            placeholder="Please select the Date and Time of your Cruise"
+            onChange={this.handleChange}
+            onClose={this.startCountDown}
+            minDate={moment.now()}>
+          </DatetimeInput>
         </div>
       </div>
     );
