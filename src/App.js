@@ -1,21 +1,30 @@
 import React, { Component } from 'react';
-import logo from './logo.svg';
-import { DatetimeInput } from 'react-datetime-inputs'
-import * as moment from 'moment'
+import logo from './images/logo.svg';
+import image from './images/cruise-Image.jpg';
+import { DatetimeInput } from 'react-datetime-inputs';
+import * as moment from 'moment';
 
-import './App.css';
+import './css/App.css';
 
 class Header extends React.Component {
   render() {
     return (
-      <div className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <h2>Welcome to CFB Cruise Countdown</h2>
+      <div className="App-header" style={{backgroundImage: `url(${image})`}}>
       </div>
     );
   }
 }
 
+class Footer extends React.Component {
+  render() {
+    return (
+      <div className="App-footer">
+        <img src={logo} className="App-logo" alt="React Logo" />
+        Powered by: Reactjs
+      </div>
+    );
+  }
+}
 class Timer extends React.Component {
   render() {
     return (
@@ -45,9 +54,9 @@ class CompleteMessage extends React.Component {
   render(){
     return(
       <div style={{display:this.props.display}} className="CompleteMessage">
-        <h1>Congratulations!!!</h1>
+        <h1>Congratulations</h1>
         <h2>Your Cruise has begun</h2>
-        <h2>Have fun!</h2>
+        <h2>Have fun</h2>
       </div>
     );
   }
@@ -68,7 +77,6 @@ class App extends Component {
     // method that triggers the countdown functionality
     this.startCountDown = this.startCountDown.bind(this);
     this.tick = this.tick.bind(this);
-    this.secondsRemaining = 0;
   }
   
   handleChange(momentValue) {
@@ -80,7 +88,6 @@ class App extends Component {
       hours: this.formatNumber(duration.hours()),
       days: this.formatNumber(duration.days())
     });
-    this.secondsRemaining = Math.floor(duration.asSeconds());
   }
   
   startCountDown() {
@@ -88,23 +95,25 @@ class App extends Component {
   }
   
   tick() {
-    var day = Math.floor(this.secondsRemaining / 60 / 60 / 24);
-    var hour = Math.floor(this.secondsRemaining / 60 / 60);
-    var min = Math.floor(this.secondsRemaining / 60);
-    var sec = Math.floor(this.secondsRemaining - (min * 60));
+    var currentDuration=moment.duration({
+      seconds: this.state.seconds,
+      minutes: this.state.minutes,
+      hours: this.state.hours,
+      days: this.state.days
+    });
+    currentDuration.subtract(1,'s');
     this.setState({
-      days: this.formatNumber(day),
-      hours: this.formatNumber(hour),
-      minutes: this.formatNumber(min),
-      seconds: this.formatNumber(sec)
+      seconds: this.formatNumber(currentDuration.seconds()),
+      minutes: this.formatNumber(currentDuration.minutes()),
+      hours: this.formatNumber(currentDuration.hours()),
+      days: this.formatNumber(currentDuration.days())
     })
-    if (day === 0 & hour ===0 & min === 0 & sec === 0) {
+    if (currentDuration.days() === 0 & currentDuration.hours() ===0 & currentDuration.minutes() === 0 & currentDuration.seconds() === 0) {
       clearInterval(this.intervalHandle);
       this.setState({
         completed : "flex"
       });
     }
-    this.secondsRemaining--
   }
 
   formatNumber(number){
@@ -117,7 +126,8 @@ class App extends Component {
   render() {
     return (
       <div className="App">
-        <Header/>
+        <Header></Header>
+        <h2>Welcome to <u>BookCruiseCabins.com</u> Cruise Countdown Creator</h2>
         <Timer days={this.state.days} hours={this.state.hours} minutes={this.state.minutes} seconds={this.state.seconds}/>
         <CompleteMessage display={this.state.completed} />
         <div className="DatetimeInputHolder">
@@ -128,6 +138,7 @@ class App extends Component {
             minDate={moment.now()}>
           </DatetimeInput>
         </div>
+        <Footer>/</Footer>
       </div>
     );
   }
